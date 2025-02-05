@@ -9,8 +9,8 @@ COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
 
-# Step 4: Install dependencies (not the whole build yet)
-RUN ./mvnw dependency:go-offline
+# Step 4: Make sure mvnw is executable and go offline for dependencies
+RUN chmod +x mvnw && ./mvnw dependency:go-offline
 
 # Step 5: Copy the entire source code
 COPY src ./src
