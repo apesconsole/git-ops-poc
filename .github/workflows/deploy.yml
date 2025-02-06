@@ -65,6 +65,11 @@ jobs:
       - name: Install ArgoCD CLI
         run: |
           Invoke-WebRequest -Uri https://github.com/argoproj/argo-cd/releases/download/v2.8.0/argocd-windows-amd64.exe -OutFile "C:\Users\user\argocd\argocd.exe"
+          # Add ArgoCD directory to the PATH environment variable
+          $env:Path += ";C:\Users\user\argocd"
+            
+          # Verify the ArgoCD CLI is available in the PATH
+          argocd version
 
       - name: Connect ArgoCD to Kubernetes
         run: |
