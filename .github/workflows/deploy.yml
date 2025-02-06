@@ -62,6 +62,11 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Install ArgoCD CLI
+        run: |
+          Invoke-WebRequest -Uri https://github.com/argoproj/argo-cd/releases/download/v2.8.0/argocd-linux-amd64 -OutFile "C:\users\user\argocd"
+          chmod +x "C:\users\user\argocd"
+
       - name: Connect ArgoCD to Kubernetes
         run: |
           kubectl config use-context docker-desktop
