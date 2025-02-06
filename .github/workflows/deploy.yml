@@ -48,7 +48,7 @@ jobs:
       - name: Create Kubernetes Secret for MY_SECRET
         run: |
           kubectl create secret generic my-secret \
-            --from-literal=MY_SECRET="$env:MY_SECRET" \
+            --from-literal=MY_SECRET=$(echo $env:MY_SECRET) \
             --dry-run=client -o yaml | kubectl apply -f -
         env:
           MY_SECRET: ${{ secrets.MY_SECRET }}
@@ -61,8 +61,8 @@ jobs:
         run: |
           kubectl create secret docker-registry apes-dockerhub-secret \
             --docker-server=https://index.docker.io/v1/ \
-            --docker-username="$env:DOCKER_USERNAME" \
-            --docker-password="$env:DOCKER_PASSWORD" \
+            --docker-username=$(echo env:DOCKER_USERNAME) \
+            --docker-password=$(echo env:DOCKER_PASSWORD) \
             --dry-run=client -o yaml | kubectl apply -f -
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -76,7 +76,10 @@ jobs:
       - name: Connect ArgoCD to Kubernetes
         run: |
           kubectl config use-context docker-desktop
-          argocd login argocd-server --username ${{ secrets.ARGOCD_USERNAME }} --password ${{ secrets.ARGOCD_PASSWORD }} --insecure
+          argocd login argocd-server --username $(echo env:ARGOCD_USERNAME) --password $(echo env:ARGOCD_PASSWORD) --insecure
+        env:
+          ARGOCD_USERNAME: ${{ secrets.ARGOCD_USERNAME }}
+          ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }}
 
       - name: Deploy with ArgoCD
         run: |
