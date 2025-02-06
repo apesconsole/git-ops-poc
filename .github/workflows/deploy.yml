@@ -64,7 +64,7 @@ jobs:
 
       - name: Install ArgoCD CLI
         run: |
-          Invoke-WebRequest -Uri https://github.com/argoproj/argo-cd/releases/download/v2.8.0/argocd-windows-amd64.exe-OutFile "C:\Users\user\argocd\argocd.exe"
+          Invoke-WebRequest -Uri https://github.com/argoproj/argo-cd/releases/download/v2.8.0/argocd-windows-amd64.exe -OutFile "C:\Users\user\argocd\argocd.exe"
 
       - name: Connect ArgoCD to Kubernetes
         run: |
