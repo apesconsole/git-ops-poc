@@ -48,8 +48,10 @@ jobs:
       - name: Create Kubernetes Secret for MY_SECRET
         run: |
           kubectl create secret generic my-secret \
-            --from-literal=MY_SECRET=${{ secrets.MY_SECRET }} \
+            --from-literal=MY_SECRET="${MY_SECRET}" \
             --dry-run=client -o yaml | kubectl apply -f -
+        env:
+          MY_SECRET: ${{ secrets.MY_SECRET }}
 
       - name: Install ArgoCD CLI
         run: |
