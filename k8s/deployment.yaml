@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: git-ops-poc
+  labels:
+    app: git-ops-poc
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: git-ops-poc
+  template:
+    metadata:
+      labels:
+        app: git-ops-poc
+    spec:
+      containers:
+        - name: git-ops-poc
+          image: apesconsole/git-ops-poc:latest
+          ports:
+            - containerPort: 8080
+      imagePullSecrets: apes-dockerhub-secret
