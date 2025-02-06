@@ -1,40 +1,27 @@
-# Step 1: Use a base image with OpenJDK 17 (OpenJDK 17 in this case)
-FROM openjdk:17-jdk-slim as build
+# Use an official Maven image as a build stage
+FROM maven:3.8.4-openjdk-17-slim AS build
 
-# Step 2: Set working directory inside the container
-WORKDIR /app
+# Set the working directory
+WORKDIR /.
 
-# Step 3: Copy the Maven wrapper and pom.xml for dependencies
-COPY mvnw .
-COPY .mvn .mvn
-COPY pom.xml .
-
-# Debugging step: List files and check permissions
-RUN ls -l && cat mvnw
-
-# Step 4: Make sure mvnw is executable and go offline for dependencies
-RUN chmod +x mvnw && ./mvnw dependency:go-offline
-
-# Step 5: Copy the entire source code
+# Copy your pom.xml and the source code into the container
+COPY pom.xml . 
 COPY src ./src
 
-# Debugging step: Check if mvnw is still executable and look for errors
-RUN ls -l && ./mvnw clean package -DskipTests
+# Run the Maven build (this will compile and package your application)
+RUN mvn clean install -DskipTests
 
-# Step 6: Package the application (skip tests for quicker build)
-RUN ./mvnw clean package -DskipTests
-
-# Step 7: Start a new image for the runtime (using a smaller base image)
+# Create a new image for runtime (to reduce the image size)
 FROM openjdk:17-jdk-slim
 
-# Step 8: Set working directory
-WORKDIR /app
+# Set working directory
+WORKDIR /.
 
 # Step 9: Copy the jar file built from the previous step
-COPY --from=build /app/target/git-ops-poc.jar /app/git-ops-poc.jar
+COPY --from=build /target/git-ops-poc.jar git-ops-poc.jar
 
 # Step 10: Expose the port your application will run on
 EXPOSE 8080
 
 # Step 11: Set the entrypoint to run the jar file when the container starts
-ENTRYPOINT ["java", "-jar", "/app/git-ops-poc.jar"]
+ENTRYPOINT ["java", "-jar", "git-ops-poc.jar"]
