@@ -64,8 +64,8 @@ jobs:
 
       - name: Install ArgoCD CLI
         run: |
-          curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/v2.8.0/argocd-linux-amd64
-          chmod +x /usr/local/bin/argocd
+          Invoke-WebRequest -Uri https://github.com/argoproj/argo-cd/releases/download/v2.8.0/argocd-linux-amd64 -OutFile "C:\usr\local\bin\argocd"
+          chmod +x "C:\usr\local\bin\argocd"
 
       - name: Connect ArgoCD to Kubernetes
         run: |
