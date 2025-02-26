@@ -20,11 +20,11 @@ spec:
           image: apesconsole/git-ops-poc:latest
           ports:
             - containerPort: 8080
-        - env:
+          env:
             - name: MY_SECRET
               valueFrom:
                  secretKeyRef:
-                   name: my.secret
+                   name: my-secret
                    key: MY_SECRET
       imagePullSecrets: 
         - name: apes-dockerhub-secret
