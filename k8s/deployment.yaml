@@ -21,10 +21,10 @@ spec:
           ports:
             - containerPort: 8080
         - env:
-            - name: my-secret
+            - name: MY_SECRET
               valueFrom:
                  secretKeyRef:
-                   name: my-secret
+                   name: MY_SECRET
                    key: MY_SECRET
       imagePullSecrets: 
         - name: apes-dockerhub-secret
