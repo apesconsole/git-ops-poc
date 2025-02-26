@@ -24,7 +24,7 @@ spec:
             - name: MY_SECRET
               valueFrom:
                  secretKeyRef:
-                   name: MY_SECRET
+                   name: my.secret
                    key: MY_SECRET
       imagePullSecrets: 
         - name: apes-dockerhub-secret
